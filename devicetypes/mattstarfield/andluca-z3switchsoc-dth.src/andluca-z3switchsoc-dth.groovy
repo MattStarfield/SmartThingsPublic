@@ -128,6 +128,7 @@ metadata {
 	}
 }
 
+/*
 // Parse incoming device messages to generate events
 def parse(String description) {
 	log.debug "description is $description"
@@ -140,6 +141,20 @@ def parse(String description) {
 		log.debug zigbee.parseDescriptionAsMap(description)
 	}
 }
+*/
+
+// Parse incoming device messages to generate events
+def parse(String description) {
+	log.debug "parse description: $description"
+	def event = zigbee.getEvent(description)
+	if (event) {
+		sendEvent(event)
+	}
+	else {
+		log.warn "*MS DID NOT PARSE MESSAGE for description : $description"
+		log.debug zigbee.parseDescriptionAsMap(description)
+	}
+}
 
 def off() {
 	zigbee.off()
@@ -148,6 +163,7 @@ def off() {
 def on() {
 	zigbee.on()
 }
+
 
 /**
  * PING is used by Device-Watch in attempt to reach the Device
